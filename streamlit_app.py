@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
+import psycopg2
 from sqlalchemy import create_engine
 
-engine = create_engine('postgresql://usuario_consulta:platzicohort10@platzicohort10.cig2rbjhhqmz.us-east-1.rds.amazonaws.com/Brazilian_e_commerce')
+engine = create_engine('postgresql+psycopg2://usuario_consulta:platzicohort10@platzicohort10.cig2rbjhhqmz.us-east-1.rds.amazonaws.com/Brazilian_e_commerce')
 
 with engine.connect() as con:
   rs = con.execute("SELECT product_id,price FROM olist_order_items_dataset WHERE price > 3000") # query que vamos a realizar

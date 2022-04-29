@@ -1,8 +1,0 @@
-<<<<<<< HEAD
-psycopg2-binary==x.x.x
-=======
-sqlalchemy
-pandas
-numpy
-psycopg2
->>>>>>> 72147135ea975d827a73fabad35da3d4bc45445d

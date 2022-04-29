@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
-import psycopg2
-from psycopg2 import DatabaseError
+from sqlalchemy import create_engine
+#import psycopg2
+#from psycopg2 import DatabaseError
 
 try:
     connection = psycopg2.connect(

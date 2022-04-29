@@ -1,4 +1,3 @@
-!pip install psycopg2
 import streamlit as st
 import pandas as pd
 import psycopg2
@@ -17,10 +16,12 @@ try:
     #cursor.execute("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'")
     cursor.execute("SELECT product_id,price FROM olist_order_items_dataset WHERE price > 3000")
     row = cursor.fetchall()
-    print(format(row))
+    #print(format(row))
     df = pd.DataFrame(row)
     df.columns = ['product_id','price']
-    print(df.head())
+    df = df.astype(str) 
+    #print(df.head())
+    #print(df.dtypes)
 except DatabaseError as ex:
     print("Error durante la conexión: {}".format(ex))
 finally:
@@ -28,5 +29,5 @@ finally:
     print("La conexión ha finalizado.")
 
 
-st.dataframe(data=df, width=None, height=None)
-st.line_chart(data=df, width=0, height=0, use_container_width=True)
+st.dataframe(data=df)
+st.bar_chart(data=df)

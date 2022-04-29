@@ -1,4 +1,1 @@
-sqlalchemy-dev
-pandas-dev
-numpy-dev
-psycopg2-dev
+psycopg2-binary==x.x.x

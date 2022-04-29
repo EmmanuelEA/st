@@ -1,0 +1,4 @@
+sqlalchemy-dev
+pandas-dev
+numpy-dev
+psycopg2-dev

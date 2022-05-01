@@ -11,11 +11,11 @@ with engine.connect() as con:
   rs = con.execute("SELECT product_id,price FROM olist_order_items_dataset WHERE price > 6000") # query que vamos a realizar
   df = pd.DataFrame(rs.fetchall()) # lectura de las filas, hay mas opciones
   df.columns = rs.keys()
-  df = df.astype(str)
+  #df = df.astype(str)
 
 # Plot the fur data using Seaborn's countplot
 fig, ax = plt.subplots(figsize=(10, 5))
-ax = sns.barplot(df)
+ax = sns.lineplot(df)
 
 
 

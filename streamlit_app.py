@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import psycopg2
 from sqlalchemy import create_engine
 
@@ -11,7 +13,14 @@ with engine.connect() as con:
   df.columns = rs.keys()
   df = df.astype(str)
 
+# Plot the fur data using Seaborn's countplot
+fig, ax = plt.subplots(figsize=(10, 5))
+ax = sns.barplot(df)
+
+
+
 st.title('Datos de AWS, tabla olist_order_items_dataset')
 st.text('consulta product_id con los precios mayores a 6000')
 st.dataframe(data=df)
-st.bar_chart(data=df)
+st.pyplot(fig)
+#st.bar_chart(data=df)

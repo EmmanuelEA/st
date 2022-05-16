@@ -76,18 +76,22 @@ sns.set_style("dark")
 ax4 = sns.lineplot(data=dfplot4)
 
 st.title('Brazilian e-comerce cohort 10')
-st.text('Count by year')
+
+
+st.text('Count of sales by year')
+code = '''dfplot = df_ord.groupby(df_ord['order_purchase_timestamp'].dt.year).count()'''
+st.code(code, language='python')
 st.dataframe(data=dfplot)
 st.pyplot(fig)
 
-st.text('Count by day')
+st.text('Count of sales by day')
 st.dataframe(data=dfplot2)
 st.pyplot(fig2)
 
-st.text('Mean by year')
+st.text('Mean of sales by day')
 st.dataframe(data=dfplot3)
 st.pyplot(fig3)
 
-st.text('Median by year')
+st.text('Median of sales by day')
 st.dataframe(data=dfplot4)
 st.pyplot(fig4)

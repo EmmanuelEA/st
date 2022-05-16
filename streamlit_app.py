@@ -5,22 +5,74 @@ import seaborn as sns
 import psycopg2
 from sqlalchemy import create_engine
 
-engine = create_engine('postgresql+psycopg2://usuario_consulta:platzicohort10@platzicohort10.cig2rbjhhqmz.us-east-1.rds.amazonaws.com/Brazilian_e_commerce')
+host1 = 'platzicohort10@platzicohort10.cig2rbjhhqmz.us-east-1.rds.amazonaws.com'
+user1 = 'usuario_consulta'
+password1 = 'platzicohort10'
+database1 = 'Brazilian_e_commerce'
+
+engine = create_engine('postgresql+psycopg2://'+
+                       user1+':'+
+                       host1+'/'+
+                       database1)
+
+def query_psql(consulta):
+    with engine.connect() as con:
+      rs = con.execute(consulta)
+      cols = rs.keys()
+      row = rs.fetchall()
+      df = pd.DataFrame(row)
+      df.columns = cols
+    return df
+
+with engine.connect() as con:
+    rs = con.execute("""SELECT * FROM pg_catalog.pg_tables 
+                      WHERE schemaname != 'pg_catalog' 
+                      AND schemaname != 'information_schema'""")
+    row = rs.fetchall()
+    df_tables = pd.DataFrame(row)
+    #print(f'Tablas de la base de datos:\n {df_tables[1]}')
 
 with engine.connect() as con:
   rs = con.execute("SELECT product_id,price FROM olist_order_items_dataset WHERE price > 6000") # query que vamos a realizar
   df = pd.DataFrame(rs.fetchall()) # lectura de las filas, hay mas opciones
   df.columns = rs.keys()
 
+sql1 = "SELECT * FROM olist_orders_dataset"
+orders = query_psql(sql1)
+orders.order_purchase_timestamp = orders.order_purchase_timestamp.astype('datetime64[ns]')
+sql2 = "SELECT * FROM olist_order_items_dataset"
+order_items = query_psql(sql2)
 
-df = df.sort_values(by=['price'], ascending=True)
+#df = df.sort_values(by=['price'], ascending=True)
 # Plot the fur data using Seaborn's countplot
+#fig, ax = plt.subplots(figsize=(10, 5))
+#sns.set_style("dark")
+#ax = sns.histplot(data=df, x='price', y='product_id', hue='product_id')
+#Juntar dataframes
+df_order = pd.merge(left = order_items, right = orders,
+                   how = "inner",
+                   left_on = ["order_id"],
+                   right_on = ["order_id"])
+
+df_ord = df_order.sort_values(by='order_purchase_timestamp') 
+df_ord.index = df_ord.order_purchase_timestamp
+dfplot = df_ord.groupby(df_ord['order_purchase_timestamp'].dt.year).count()
+dfplot.plot(figsize=(30,15))
 fig, ax = plt.subplots(figsize=(10, 5))
 sns.set_style("dark")
-ax = sns.histplot(data=df, x='price', y='product_id', hue='product_id')
+ax = sns.histplot(data=dfplot)
 
+dfplot2 = df_ord.resample('D').count()
+dfplot2.plot(figsize=(30,15))
 
-st.title('Datos de AWS, tabla olist_order_items_dataset')
-st.text('consulta product_id con los precios mayores a 5000')
-st.dataframe(data=df)
-st.pyplot(fig)
+dfplot3 = df_ord.resample('D').mean()
+dfplot3.plot(figsize=(30,15))
+
+dfplot4 = df_ord.resample('D').median()
+dfplot4.plot(figsize=(30,15))
+
+st.title('Brazilian e-comerce cohort 10')
+st.text('Count by year')
+st.dataframe(data=dfplot)
+st.plotly_chart(fig)
+#st.pyplot(fig)

@@ -43,11 +43,6 @@ orders.order_purchase_timestamp = orders.order_purchase_timestamp.astype('dateti
 sql2 = "SELECT * FROM olist_order_items_dataset"
 order_items = query_psql(sql2)
 
-#df = df.sort_values(by=['price'], ascending=True)
-# Plot the fur data using Seaborn's countplot
-#fig, ax = plt.subplots(figsize=(10, 5))
-#sns.set_style("dark")
-#ax = sns.histplot(data=df, x='price', y='product_id', hue='product_id')
 #Juntar dataframes
 df_order = pd.merge(left = order_items, right = orders,
                    how = "inner",
@@ -60,19 +55,39 @@ dfplot = df_ord.groupby(df_ord['order_purchase_timestamp'].dt.year).count()
 dfplot.plot(figsize=(30,15))
 fig, ax = plt.subplots(figsize=(10, 5))
 sns.set_style("dark")
-ax = sns.histplot(data=dfplot)
+ax = sns.lineplot(data=dfplot)
 
 dfplot2 = df_ord.resample('D').count()
 dfplot2.plot(figsize=(30,15))
+fig2, ax2 = plt.subplots(figsize=(10, 5))
+sns.set_style("dark")
+ax2 = sns.lineplot(data=dfplot2)
 
 dfplot3 = df_ord.resample('D').mean()
 dfplot3.plot(figsize=(30,15))
+fig3, ax3 = plt.subplots(figsize=(10, 5))
+sns.set_style("dark")
+ax3 = sns.lineplot(data=dfplot3)
 
 dfplot4 = df_ord.resample('D').median()
 dfplot4.plot(figsize=(30,15))
+fig4, ax4 = plt.subplots(figsize=(10, 5))
+sns.set_style("dark")
+ax4 = sns.lineplot(data=dfplot4)
 
 st.title('Brazilian e-comerce cohort 10')
 st.text('Count by year')
 st.dataframe(data=dfplot)
-st.plotly_chart(fig)
-#st.pyplot(fig)
+st.pyplot(fig)
+
+st.text('Count by day')
+st.dataframe(data=dfplot2)
+st.pyplot(fig2)
+
+st.text('Mean by year')
+st.dataframe(data=dfplot3)
+st.pyplot(fig3)
+
+st.text('Median by year')
+st.dataframe(data=dfplot4)
+st.pyplot(fig4)

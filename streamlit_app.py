@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import psycopg2
 from sqlalchemy import create_engine
+from PIL import Image
 
 host1 = 'platzicohort10@platzicohort10.cig2rbjhhqmz.us-east-1.rds.amazonaws.com'
 user1 = 'usuario_consulta'
@@ -76,6 +77,9 @@ sns.set_style("dark")
 ax4 = sns.lineplot(data=dfplot4)
 
 st.title('Brazilian e-comerce cohort 10')
+image = Image.open('activitylist.png')
+st.image(image)
+
 st.write("[Notion of the activities](https://www.notion.so/3250b16f6a7b47eab7644abbe65fd9ac?v=33d926d3d43b46c6b4abe028a2d42e1f)")
 
 

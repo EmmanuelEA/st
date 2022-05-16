@@ -76,6 +76,7 @@ sns.set_style("dark")
 ax4 = sns.lineplot(data=dfplot4)
 
 st.title('Brazilian e-comerce cohort 10')
+st.write("[Notion of the activities](https://www.notion.so/3250b16f6a7b47eab7644abbe65fd9ac?v=33d926d3d43b46c6b4abe028a2d42e1f)")
 
 
 st.text('Count of sales by year')

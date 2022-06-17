@@ -1,9 +1,13 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import psycopg2
 from sqlalchemy import create_engine
+import plotly.express as px
+import json
+from urllib.request import urlopen
 from PIL import Image
 
 host1 = 'platzicohort10@platzicohort10.cig2rbjhhqmz.us-east-1.rds.amazonaws.com'
@@ -100,3 +104,9 @@ st.pyplot(fig3)
 st.text('Median of sales by day')
 st.dataframe(data=dfplot4)
 st.pyplot(fig4)
+
+st.header("test html import")
+HtmlFile = open("./percapitamap.html", 'r', encoding='utf-8')
+source_code = HtmlFile.read() 
+#print(source_code)
+components.html(source_code, height = 600,scrolling=True)

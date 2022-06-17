@@ -3,4 +3,3 @@ psycopg2-binary
 matplotlib
 seaborn
 plotly
-urllib
